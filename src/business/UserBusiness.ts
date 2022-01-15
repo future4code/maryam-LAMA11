@@ -1,3 +1,5 @@
+import ShowDatabase from "../data/ShowDatabase"
+import UserDatabase from "../data/UserDatabase"
 import { ROLE, User } from "../model/User"
 import { Authenticator } from "../services/authenticator"
 import { HashManager } from "../services/hashManager"
@@ -62,5 +64,37 @@ export default class UserBusiness {
         const token = new Authenticator().generateToken({id: user.getId(), role: user.getRole()})
 
         return token
+    }
+
+    async buyTicket (quantity: number, token: string, ticketId: string): Promise <void> {
+        if (!quantity){
+            throw new Error ('Passe a quantidade pelo campo quantity do body.')
+        }
+
+        if (!token){
+            throw new Error ('Passe o token pelo campo authorization do headers.')
+        }
+
+        if (!ticketId){
+            throw new Error ('Passe a ID do ticket pelo path param.')
+        }
+
+        const tokenData = new Authenticator().getTokenData(token)
+        if (!tokenData){
+            throw new Error ('Token inválido.')
+        }
+
+        const ticket = await new ShowDatabase().getTicketById(ticketId)
+        if (!ticket){
+            throw new Error ('Ingresso não encontrado!')
+        }
+
+        if ((ticket[0].quantity - ticket[0].sold) < quantity){
+            throw new Error ('Ingressos esgotados para esse show.')
+        }
+
+        const id = new IdGenerator().generateId()
+
+        await new UserDatabase().buyTicket(id, quantity, tokenData.id, ticketId)
     }
 }

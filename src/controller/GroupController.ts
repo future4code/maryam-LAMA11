@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import GroupBusiness from "../business/GroupBusiness";
+import GroupDatabase from "../data/GroupDatabase";
 import { Group } from "../model/Group";
 
 export default class GroupController {
@@ -20,7 +21,7 @@ export default class GroupController {
         try {
             const id = req.params.id
 
-            const group = await new GroupBusiness().getById(id)
+            const group = await new GroupBusiness().getById(id, new GroupDatabase().checkById)
 
             res.status(200).send(group)
         } catch (error: any) {

@@ -13,3 +13,4 @@ app.post('/create', groupController.create)
 app.post('/shows', showController.create)
 
 app.get('/group/:id', groupController.getById)
+app.get('/shows/:day', showController.getAll)

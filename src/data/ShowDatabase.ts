@@ -31,4 +31,20 @@ export default class ShowDatabase {
                 band_id: show.getGroupId()
             })
     }
+
+    async getAll (weekDay: string): Promise <Show []> {
+        const shows = await connection ('lama_shows')
+            .where({week_day: weekDay})
+            .orderBy('start_time')
+        
+        const allShows: Show [] = []
+
+        for (let show of shows){
+            const newShow = new Show(show.id, show.week_day, show.start_time, show.end_time, show.band_id)
+
+            allShows.push(newShow)
+        }
+
+        return allShows
+    }
 }

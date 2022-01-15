@@ -44,4 +44,14 @@ export default class ShowBusiness {
 
         await new ShowDatabase().create(newShow)
     }
+
+    async getAll (weekDay: string, getShows: (weekDay: string) => Promise<Show []> ): Promise <Show []> {
+        if (!weekDay){
+            throw new Error ('Informe o dia dos shows.')
+        }
+
+        const shows = getShows(weekDay)
+    
+        return shows
+    }
 }

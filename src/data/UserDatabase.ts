@@ -2,7 +2,7 @@ import { User } from "../model/User";
 import connection from "./connection";
 
 export default class UserDatabase {
-    async signup (user: User){
+    async signup (user: User): Promise <void>{
         await connection ('lama_users')
             .insert({
                 id: user.getId(),

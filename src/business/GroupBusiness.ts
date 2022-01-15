@@ -5,7 +5,11 @@ import { Authenticator } from "../services/authenticator"
 import IdGenerator from "../services/idGenerator"
 
 export default class GroupBusiness {
-    async create (name: string, musicGenre: string, responsible: string, token: string): Promise<void> {
+    async create (
+        name: string, 
+        musicGenre: string, 
+        responsible: string, 
+        token: string): Promise<void> {
         if (!name || !musicGenre || !responsible){
             throw new Error ('Envie todas as informações necessárias no body da requisição (name, musicGenre e responsible).')
         }
@@ -37,12 +41,14 @@ export default class GroupBusiness {
         await groupDB.create(newGroup)
     }
 
-    async getById (id: string): Promise <Group> {
+    async getById (
+        id: string,
+        getGroup:  (id: string) => Promise<Group | undefined>): Promise <Group> {
         if (!id){
             throw new Error ('Envie a ID como path params.')
         }
 
-        const group = await new GroupDatabase().checkById(id)
+        const group = await getGroup(id)
 
         if (!group){
             throw new Error ('Banda não encontrada!')

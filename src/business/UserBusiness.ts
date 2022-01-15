@@ -1,11 +1,17 @@
-import UserDatabase from "../data/UserDatabase"
 import { ROLE, User } from "../model/User"
 import { Authenticator } from "../services/authenticator"
 import { HashManager } from "../services/hashManager"
 import IdGenerator from "../services/idGenerator"
 
+
 export default class UserBusiness {
-    async signup (name: string, email: string, password: string, role?: string): Promise<string> {
+    async signup (
+        name: string, 
+        email: string, 
+        password: string, 
+        checkEmail: (email: string) => Promise <User | undefined>,
+        register: (user: User) => Promise <void>,
+        role?: string): Promise<string> {
         if (!name || !email || !password){
             throw new Error ('Preencha os campos obrigatórios (name, email e password).')
         }
@@ -17,7 +23,7 @@ export default class UserBusiness {
             userRole = ROLE.ADMIN
         }
 
-        const checkUser = await new UserDatabase().checkUsers(email)
+        const checkUser = await checkEmail(email)
         if (checkUser){
             throw new Error ('Email já cadastrado!')
         }
@@ -28,20 +34,22 @@ export default class UserBusiness {
 
         const newUser = new User(id, email, name, hashPassword, userRole)
 
-        await new UserDatabase().signup(newUser)
+        await register(newUser)
 
         const token = new Authenticator().generateToken({id: newUser.getId(), role: newUser.getRole()})
 
         return token
     }
 
-    async login (email: string, password: string): Promise<string> {
+    async login (
+        email: string, 
+        password: string,
+        checkEmail: (email: string) => Promise <User | undefined>): Promise<string> {
         if (!email || !password){
             throw new Error ('Preencha os campos obrigatórios (email e password)')
         }
 
-        const userDB = new UserDatabase()
-        const user = await userDB.checkUsers(email)
+        const user = await checkEmail(email)
         if (!user){
             throw new Error ('Email ou senha incorretos.')
         }

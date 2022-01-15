@@ -1,6 +1,7 @@
 import { User } from "../model/User";
 import connection from "./connection";
 
+
 export default class UserDatabase {
     async signup (user: User): Promise <void>{
         await connection ('lama_users')
@@ -25,5 +26,20 @@ export default class UserDatabase {
         } else {
             return undefined
         }
+    }
+
+    async buyTicket (id: string, quantity: number, userId: string, ticketId: string): Promise <void> {
+        await connection ('lama_tickets')
+            .where({id: ticketId})
+            .increment('sold', quantity)
+            
+        await connection ('lama_bought_tickets')
+        .insert({
+            id: id,
+            quantity: quantity,
+            user_id: userId,
+            ticket_id: ticketId
+        })
+
     }
 }

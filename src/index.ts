@@ -11,6 +11,11 @@ app.post('/signup', userController.signup)
 app.post('/login', userController.login)
 app.post('/create', groupController.create)
 app.post('/shows', showController.create)
+app.post('/ticket', showController.createTicket)
+app.post('/photo/:showId', showController.createPhoto)
 
 app.get('/group/:id', groupController.getById)
 app.get('/shows/:day', showController.getAll)
+app.get('/photo/:showId', showController.getPhotos)
+
+app.put('/ticket/:ticketId', userController.buyTicket)

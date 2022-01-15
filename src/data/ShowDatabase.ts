@@ -1,4 +1,4 @@
-import { Show } from "../model/Show";
+import { Photo, Show, Ticket } from "../model/Show";
 import connection from "./connection";
 
 export default class ShowDatabase {
@@ -46,5 +46,54 @@ export default class ShowDatabase {
         }
 
         return allShows
+    }
+
+    async createTicket (ticket: Ticket): Promise <void> {
+        await connection ('lama_tickets')
+            .insert({
+                id: ticket.getId(),
+                name: ticket.getName(),
+                price: ticket.getPrice(),
+                quantity: ticket.getQuantity(),
+                show_id: ticket.getShowId()
+            })
+    }
+
+    async getTicketById (ticketId: string): Promise <any [] | undefined> {
+        const ticket = await connection ('lama_tickets')
+            .where({id: ticketId})
+            .select('*')
+        
+        if (ticket.length > 0){
+            return ticket
+
+        } else {
+            return undefined
+        }
+    }
+
+    async createPhoto (photo: Photo): Promise<void> {
+        await connection ('lama_photos')
+            .insert({
+                id: photo.getId(),
+                url: photo.getUrl(),
+                show_id: photo.getShowId()
+            })
+    }
+
+    async getPhotos (showId: string): Promise <Photo []> {
+        const photos = await connection ('lama_photos')
+            .where({show_id: showId})
+            .select('*')
+        
+        const photosList: Photo [] = []
+
+        for (let photo of photos){
+            const newPhoto =  new Photo(photo.id, photo.url, photo.show_id)
+
+            photosList.push(newPhoto)
+        }
+
+        return photosList
     }
 }

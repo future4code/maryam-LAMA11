@@ -1,0 +1,49 @@
+{
+  "name": "maryam-LAMA11",
+  "version": "1.0.0",
+  "description": "Como você deve saber muito bem, o nosso querido chefinho Astrodev é uma pessoa com Networking incrível e ele conhece vários artistas estrelados. Além disso, ele também é um grande ~~megalomaníaco~~ visionário e está planejando fazer um grande evento: o **LAMA**, *Labenu Musical Awards*, um festival  com várias bandas famosas para a formatura da sua turma e, no final, vocês podem eleger a banda que mais gostaram! Entretanto, na opinião dele, vocês só serão merecedores se entregarem um sistema impecável que permita o gerenciamento completo desses shows.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "dev": "ts-node-dev ./src/index.ts",
+    "start": "node ./build/index.js",
+    "build": "tsc",
+    "migrations": "tsnd ./src/data/migrations.ts",
+    "debug": "npx tsc && node --inspect ./build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/future4code/maryam-LAMA11.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/future4code/maryam-LAMA11/issues"
+  },
+  "homepage": "https://github.com/future4code/maryam-LAMA11#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^11.0.0",
+    "express": "^4.17.2",
+    "jest": "^27.4.7",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.95.15",
+    "mysql": "^2.18.1",
+    "ts-jest": "^27.1.2",
+    "ts-node": "^10.4.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.4",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/jest": "^27.4.0",
+    "@types/jsonwebtoken": "^8.5.7",
+    "@types/knex": "^0.16.1",
+    "@types/uuid": "^8.3.4"
+  }
+}
